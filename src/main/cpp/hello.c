@@ -156,12 +156,13 @@ int main ()
     if (! fruit.pixels) {
 	return -1;
     }
-
+    int uniquer = rand() % 100;
     for (y = 0; y < fruit.height; y++) {
         for (x = 0; x < fruit.width; x++) {
             pixel_t * pixel = pixel_at (& fruit, x, y);
-            pixel->red = pix (rand() % 50, fruit.width);
-            pixel->green = pix (rand() % 50, fruit.height);
+            pixel->red = pix (uniquer, fruit.width);
+            pixel->green = pix (x, fruit.height);
+	    pixel->blue = pix (y, fruit.height);
         }
     }
 
