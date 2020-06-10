@@ -156,12 +156,13 @@ int main ()
     if (! avatar.pixels) {
 	return -1;
     }
-
+    int uniquer = rand() % 100;
     for (y = 0; y < avatar.height; y++) {
         for (x = 0; x < avatar.width; x++) {
             pixel_t * pixel = pixel_at (& avatar, x, y);
-            pixel->red = pix (rand() % 50, avatar.width);
-            pixel->green = pix (rand() % 50, avatar.height);
+            pixel->red = pix (uniquer, avatar.width);
+            pixel->green = pix (x, fruit.height);
+	    pixel->blue = pix (y, avatar.height);
         }
     }
 
