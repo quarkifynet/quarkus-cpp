@@ -16,14 +16,14 @@ import java.net.URL;
 public class ExampleResource {
 
     @GET
-    @Produces(MediaType.TEXT_PLAIN)
-    public String hello() throws IOException {
-        final URL cpuCoolingR = getClass().getClassLoader().getResource("hello");
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    public File hello() throws IOException {
+        final URL drawImage = getClass().getClassLoader().getResource("hello");
         Context polyglot = Context.newBuilder().
                 allowAllAccess(true).build();
-        Source source = Source.newBuilder("llvm", cpuCoolingR).build();
+        Source source = Source.newBuilder("llvm", drawImage).build();
         Value cpart = polyglot.eval(source);
         cpart.execute();
-        return "hello";
+        return new File("fruit.png");
     }
 }

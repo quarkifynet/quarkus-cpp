@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
-    
+
 /* A coloured pixel. */
 
 typedef struct
@@ -14,7 +14,7 @@ typedef struct
 pixel_t;
 
 /* A picture. */
-    
+
 typedef struct
 {
     pixel_t *pixels;
@@ -22,15 +22,15 @@ typedef struct
     size_t height;
 }
 bitmap_t;
-    
-/* Given "bitmap", this returns the pixel of bitmap at the point 
+
+/* Given "bitmap", this returns the pixel of bitmap at the point
    ("x", "y"). */
 
 static pixel_t * pixel_at (bitmap_t * bitmap, int x, int y)
 {
     return bitmap->pixels + bitmap->width * y + x;
 }
-    
+
 /* Write "bitmap" to a PNG file specified by "path"; returns 0 on
    success, non-zero on error. */
 
@@ -51,7 +51,7 @@ static int save_png_to_file (bitmap_t *bitmap, const char *path)
     */
     int pixel_size = 3;
     int depth = 8;
-    
+
     fp = fopen (path, "wb");
     if (! fp) {
         goto fopen_failed;
@@ -61,18 +61,18 @@ static int save_png_to_file (bitmap_t *bitmap, const char *path)
     if (png_ptr == NULL) {
         goto png_create_write_struct_failed;
     }
-    
+
     info_ptr = png_create_info_struct (png_ptr);
     if (info_ptr == NULL) {
         goto png_create_info_struct_failed;
     }
-    
+
     /* Set up error handling. */
 
     if (setjmp (png_jmpbuf (png_ptr))) {
         goto png_failure;
     }
-    
+
     /* Set image attributes. */
 
     png_set_IHDR (png_ptr,
@@ -84,12 +84,12 @@ static int save_png_to_file (bitmap_t *bitmap, const char *path)
                   PNG_INTERLACE_NONE,
                   PNG_COMPRESSION_TYPE_DEFAULT,
                   PNG_FILTER_TYPE_DEFAULT);
-    
+
     /* Initialize rows of PNG. */
 
     row_pointers = png_malloc (png_ptr, bitmap->height * sizeof (png_byte *));
     for (y = 0; y < bitmap->height; y++) {
-        png_byte *row = 
+        png_byte *row =
             png_malloc (png_ptr, sizeof (uint8_t) * bitmap->width * pixel_size);
         row_pointers[y] = row;
         for (x = 0; x < bitmap->width; x++) {
@@ -99,7 +99,7 @@ static int save_png_to_file (bitmap_t *bitmap, const char *path)
             *row++ = pixel->blue;
         }
     }
-    
+
     /* Write the image data to "fp". */
 
     png_init_io (png_ptr, fp);
@@ -110,12 +110,12 @@ static int save_png_to_file (bitmap_t *bitmap, const char *path)
        "status" to a value which indicates success. */
 
     status = 0;
-    
+
     for (y = 0; y < bitmap->height; y++) {
         png_free (png_ptr, row_pointers[y]);
     }
     png_free (png_ptr, row_pointers);
-    
+
  png_failure:
  png_create_info_struct_failed:
     png_destroy_write_struct (&png_ptr, &info_ptr);
@@ -160,12 +160,12 @@ int main ()
     for (y = 0; y < fruit.height; y++) {
         for (x = 0; x < fruit.width; x++) {
             pixel_t * pixel = pixel_at (& fruit, x, y);
-            pixel->red = pix (x, fruit.width);
-            pixel->green = pix (y, fruit.height);
+            pixel->red = pix (rand() % 50, fruit.width);
+            pixel->green = pix (rand() % 50, fruit.height);
         }
     }
 
-    
+
 
     /* Write the image to a file 'fruit.png'. */
 
