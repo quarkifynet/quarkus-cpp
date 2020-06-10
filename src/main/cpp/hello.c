@@ -139,7 +139,7 @@ static int pix (int value, int max)
 
 int main ()
 {
-    bitmap_t fruit;
+    bitmap_t avatar;
     int x;
     int y;
     int status;
@@ -148,33 +148,33 @@ int main ()
 
     /* Create an image. */
 
-    fruit.width = 100;
-    fruit.height = 100;
+    avatar.width = 100;
+    avatar.height = 100;
 
-    fruit.pixels = calloc (fruit.width * fruit.height, sizeof (pixel_t));
+    avatar.pixels = calloc (avatar.width * avatar.height, sizeof (pixel_t));
 
-    if (! fruit.pixels) {
+    if (! avatar.pixels) {
 	return -1;
     }
 
-    for (y = 0; y < fruit.height; y++) {
-        for (x = 0; x < fruit.width; x++) {
-            pixel_t * pixel = pixel_at (& fruit, x, y);
-            pixel->red = pix (rand() % 50, fruit.width);
-            pixel->green = pix (rand() % 50, fruit.height);
+    for (y = 0; y < avatar.height; y++) {
+        for (x = 0; x < avatar.width; x++) {
+            pixel_t * pixel = pixel_at (& avatar, x, y);
+            pixel->red = pix (rand() % 50, avatar.width);
+            pixel->green = pix (rand() % 50, avatar.height);
         }
     }
 
 
 
-    /* Write the image to a file 'fruit.png'. */
+    /* Write the image to a file 'avatar.png'. */
 
-    if (save_png_to_file (& fruit, "fruit.png")) {
+    if (save_png_to_file (& avatar, "avatar.png")) {
 	fprintf (stderr, "Error writing file.\n");
 	status = -1;
     }
 
-    free (fruit.pixels);
+    free (avatar.pixels);
 
     return status;
 }
