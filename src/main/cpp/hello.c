@@ -161,7 +161,7 @@ int main ()
         for (x = 0; x < avatar.width; x++) {
             pixel_t * pixel = pixel_at (& avatar, x, y);
             pixel->red = pix (uniquer, avatar.width);
-            pixel->green = pix (x, fruit.height);
+            pixel->green = pix (x, avatar.height);
 	    pixel->blue = pix (y, avatar.height);
         }
     }
