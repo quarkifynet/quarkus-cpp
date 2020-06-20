@@ -14,28 +14,28 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
-@Path("/avatar")
+@Path("/hello")
 public class ExampleResource {
-    private Value drawMethod;
+    private Value helloMethod;
 
     public void onStart(@Observes StartupEvent se) {
         new Thread() {{
-        final URL drawImage = getClass().getClassLoader().getResource("hello");
-        Context polyglot = Context.newBuilder().allowAllAccess(true).build();
-        Source source = null;
-        try {
-            source = Source.newBuilder("llvm", drawImage).build();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        drawMethod = polyglot.eval(source);
+            final URL drawImage = getClass().getClassLoader().getResource("example");
+            Context polyglot = Context.newBuilder().allowAllAccess(true).build();
+            Source source = null;
+            try {
+                source = Source.newBuilder("llvm", drawImage).build();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            helloMethod = polyglot.eval(source);
         }}.start();
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_OCTET_STREAM)
-    public File uniqueImage() throws IOException {
-        drawMethod.execute();
-        return new File("avatar.png");
+    @Produces(MediaType.TEXT_PLAIN)
+    public String executeHello() throws IOException {
+        helloMethod.execute();
+        return "See terminal output :)";
     }
 }
